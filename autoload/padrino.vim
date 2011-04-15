@@ -2134,7 +2134,7 @@ function! s:BufFinderCommands()
   call s:addfilecmds("model")
   call s:addfilecmds("view")
   call s:addfilecmds("controller")
-  call s:addfilecmds("mailer")
+  " call s:addfilecmds("mailer") No mailer dir in Padrino
   call s:addfilecmds("migration")
   call s:addfilecmds("observer")
   call s:addfilecmds("helper")
@@ -2156,8 +2156,8 @@ function! s:BufFinderCommands()
   call s:addfilecmds("plugin")
   call s:addfilecmds("task")
   call s:addfilecmds("lib")
-  call s:addfilecmds("environment")
-  call s:addfilecmds("initializer")
+  " call s:addfilecmds("environment") No environment dir in Padrino
+  " call s:addfilecmds("initializer") No initializer dir in Padrino
 endfunction
 
 function! s:completion_filter(results,A)
@@ -2642,6 +2642,7 @@ endfunction
 
 function! s:controllerEdit(cmd,...)
   let suffix = '.rb'
+  " if no parameter is passed 
   if a:0 == 0
     let controller = s:controller(1)
     if padrino#buffer().type_name() =~# '^view\%(-layout\|-partial\)\@!'
@@ -2650,6 +2651,11 @@ function! s:controllerEdit(cmd,...)
   else
     let controller = a:1
   endif
+  " if controller name is passed look in admin/controllers and app/controllers
+  if padrino#app().has_file("admin/controllers/".controller."_controller.rb") || !padrino#app().has_file("admin/controllers/".controller.".rb")
+    let suffix = "_controller".suffix
+  endif
+  return s:EditSimpleRb(a:cmd,"controller",controller,"admin/controllers/",suffix)
   if padrino#app().has_file("app/controllers/".controller."_controller.rb") || !padrino#app().has_file("app/controllers/".controller.".rb")
     let suffix = "_controller".suffix
   endif
@@ -4658,4 +4664,5 @@ endif
 let &cpo = s:cpo_save
 
 " vim:set sw=2 sts=2:
+
 
