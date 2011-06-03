@@ -2272,7 +2272,7 @@ function! s:fixturesList(A,L,P)
 endfunction
 
 function! s:localeList(A,L,P)
-  return s:completion_filter(padrino#app().relglob("config/locales/","**/*"),a:A)
+  return s:completion_filter(padrino#app().relglob("app/locale/","**/*"),a:A)
 endfunction
 
 function! s:migrationList(A,L,P)
