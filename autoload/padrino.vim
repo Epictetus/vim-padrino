@@ -2535,9 +2535,9 @@ endfunction
 function! s:localeEdit(cmd,...)
   let c = a:0 ? a:1 : padrino#app().default_locale()
   if c =~# '\.'
-    call s:edit(a:cmd,padrino#app().find_file(c,'config/locales',[],'config/locales/'.c))
+    call s:edit(a:cmd,padrino#app().find_file(c,'app/locale',[],'app/locale/'.c))
   else
-    call s:findedit(a:cmd,padrino#app().find_file(c,'config/locales',['.yml','.rb'],'config/locales/'.c))
+    call s:findedit(a:cmd,padrino#app().find_file(c,'app/locale',['.yml','.rb'],'app/locale/'.c))
   endif
 endfunction
 
