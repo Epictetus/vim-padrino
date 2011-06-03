@@ -2243,7 +2243,8 @@ endfunction
 function! s:stylesheetList(A,L,P)
   let list = padrino#app().relglob('public/stylesheets/','**/*','.css')
   if padrino#app().has('sass')
-    call extend(list,padrino#app().relglob('public/stylesheets/sass/','**/*','.s?ss'))
+    "call extend(list,padrino#app().relglob('public/stylesheets/sass/','**/*','.s?ss'))
+    call extend(list,padrino#app().relglob('app/stylesheets/','**/*','.s?ss'))
     call s:uniq(list)
   endif
   return s:completion_filter(list,a:A)
@@ -2668,10 +2669,16 @@ endfunction
 
 function! s:stylesheetEdit(cmd,...)
   let name = a:0 ? a:1 : s:controller(1)
-  if padrino#app().has('sass') && padrino#app().has_file('public/stylesheets/sass/'.name.'.sass')
-    return s:EditSimpleRb(a:cmd,"stylesheet",name,"public/stylesheets/sass/",".sass",1)
-  elseif padrino#app().has('sass') && padrino#app().has_file('public/stylesheets/sass/'.name.'.scss')
-    return s:EditSimpleRb(a:cmd,"stylesheet",name,"public/stylesheets/sass/",".scss",1)
+  " if padrino#app().has('sass') && padrino#app().has_file('public/stylesheets/sass/'.name.'.sass')
+  "   return s:EditSimpleRb(a:cmd,"stylesheet",name,"public/stylesheets/sass/",".sass",1)
+  " elseif padrino#app().has('sass') && padrino#app().has_file('public/stylesheets/sass/'.name.'.scss')
+  "   return s:EditSimpleRb(a:cmd,"stylesheet",name,"public/stylesheets/sass/",".scss",1)
+  
+  " Padrino sass/scss files aren't in sub directories
+  if padrino#app().has('sass') && padrino#app().has_file('app/stylesheets/'.name.'.sass')
+    return s:EditSimpleRb(a:cmd,"stylesheet",name,"app/stylesheets/",".sass",1)
+  elseif padrino#app().has('sass') && padrino#app().has_file('app/stylesheets/'.name.'.scss')
+    return s:EditSimpleRb(a:cmd,"stylesheet",name,"app/stylesheets/",".scss",1)
   elseif padrino#app().has('lesscss') && padrino#app().has_file('app/stylesheets/'.name.'.less')
     return s:EditSimpleRb(a:cmd,"stylesheet",name,"app/stylesheets/",".less",1)
   else
